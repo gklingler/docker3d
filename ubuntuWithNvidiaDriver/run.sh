@@ -2,5 +2,5 @@
 
 COMMAND=/bin/bash
 
-xhost +localhost # allow connections to X server from localhost
+xhost + # allow connections to X server
 docker run --privileged -e "DISPLAY=unix:0.0" -v="/tmp/.X11-unix:/tmp/.X11-unix:rw"  -i -t ubuntu_with_nvidia_driver $COMMAND
