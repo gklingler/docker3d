@@ -6,6 +6,7 @@ RUN apt-get install -y mesa-utils
 
 # install nvidia driver
 RUN apt-get install -y binutils
+RUN apt-get install -y kmod
 ADD NVIDIA-DRIVER.run /tmp/NVIDIA-DRIVER.run
-RUN sh /tmp/NVIDIA-DRIVER.run -a -N --ui=none --no-kernel-module
+RUN sh /tmp/NVIDIA-DRIVER.run -s -N --ui=none --no-kernel-module
 RUN rm /tmp/NVIDIA-DRIVER.run
