@@ -1,6 +1,6 @@
 #!/bin/sh
 
-IMAGE_NAME=ubuntu_with_nvidia_driver
+IMAGE_NAME=docker3d
 NVIDIA_VERSION=$(/sbin/modinfo -F version nvidia)
 # path to nvidia driver
 NVIDIA_DRIVER=NVIDIA-Linux-x86_64-${NVIDIA_VERSION}.run
