@@ -2,5 +2,16 @@
 
 COMMAND=/bin/bash
 
-xhost + # allow connections to X server
-docker run --privileged -e "DISPLAY=unix:0.0" -v="/tmp/.X11-unix:/tmp/.X11-unix:rw"  -i -t ubuntu_with_nvidia_driver sudo su - worker
+if [ "x${DISPLAY}" = "x" ]; then
+	docker run --privileged \
+		-v="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+		-v="/var/tmp:/var/tmp:rw" \
+		-i -t docker3d sudo su - worker
+else
+	xhost + # allow connections to X server
+	docker run --privileged \
+		-e "DISPLAY=unix:$(echo ${DISPLAY}|cut -d: -f2)" \
+		-v="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+		-v="/var/tmp:/var/tmp:rw" \
+		-i -t docker3d sudo su - worker
+fi
