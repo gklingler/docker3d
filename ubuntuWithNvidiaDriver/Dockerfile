@@ -7,17 +7,25 @@ ENV https_proxy "http://imladris.lasthome.solace.krynn:3128"
 ENV no_proxy "localhost.localdomain,localhost,127.0.0.1,.localdomain4,localhost4,.localdomain6,localhost6,.lasthome.solace.krynn"
 
 # Workaround for issues with mirrors..
-RUN echo 'options ndots:2 timeout:2 attempts:2 single-request' >> /etc/resolv.conf
-# RUN echo 'Acquire::http::Proxy "http://imladris.lasthome.solace.krynn:3128";' >> /etc/apt/apt.conf.d/01-vendor-ubuntu
+# RUN echo 'options ndots:2 timeout:2 attempts:2 single-request' >> /etc/resolv.conf
+RUN echo 'Acquire::http::Proxy "http://imladris.lasthome.solace.krynn:3128";' >> /etc/apt/apt.conf.d/01-vendor-ubuntu
 # RUN sed -i s/http/ftp/ /etc/apt/sources.list
 
 RUN apt-get update
 RUN apt-get install -y mesa-utils
 
-# install nvidia driver
-RUN apt-get install -y sudo binutils less x11-apps kmod apt-utils python python-tk pkg-config nano iproute
-ADD NVIDIA-DRIVER.run /tmp/NVIDIA-DRIVER.run
+RUN apt-get install -y sudo binutils less x11-apps kmod apt-utils python python-tk pkg-config nano iproute wget
 
+# Google Chrome
+WORKDIR /tmp
+#RUN apt-get install -y libxss1 libappindicator1 libindicator7
+ADD google-chrome-stable_current_amd64.deb /tmp/google-chrome-stable_current_amd64.deb
+#RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+#RUN dpkg -i /tmp/google-chrome-stable_current_amd64.deb
+RUN sudo apt-get install -f -y /tmp/google-chrome-stable_current_amd64.deb
+
+# install nvidia driver
+ADD NVIDIA-DRIVER.run /tmp/NVIDIA-DRIVER.run
 # Run NVidia driver install
 RUN sh /tmp/NVIDIA-DRIVER.run -s -N --ui=none --no-kernel-module
 RUN rm /tmp/NVIDIA-DRIVER.run
