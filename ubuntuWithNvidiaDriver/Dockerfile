@@ -15,14 +15,19 @@ RUN apt-get update
 RUN apt-get install -y mesa-utils
 
 RUN apt-get install -y sudo binutils less x11-apps kmod apt-utils python python-tk pkg-config nano iproute wget
+RUN apt-get update
+
+RUN apt-get install -y rss-glx
+
 
 # Google Chrome
 WORKDIR /tmp
 #RUN apt-get install -y libxss1 libappindicator1 libindicator7
+RUN wget -qO google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 ADD google-chrome-stable_current_amd64.deb /tmp/google-chrome-stable_current_amd64.deb
-#RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-#RUN dpkg -i /tmp/google-chrome-stable_current_amd64.deb
-RUN sudo apt-get install -f -y /tmp/google-chrome-stable_current_amd64.deb
+RUN apt-get update
+#RUN sudo dpkg -i /tmp/google-chrome-stable_current_amd64.deb
+RUN sudo apt-get install -y /tmp/google-chrome-stable_current_amd64.deb
 
 # install nvidia driver
 ADD NVIDIA-DRIVER.run /tmp/NVIDIA-DRIVER.run
